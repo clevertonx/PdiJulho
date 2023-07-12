@@ -7,8 +7,10 @@ export const TableColumn = styled.td`
 `;
 
 export const Category = styled.div<{color: string}>`
-    display: inline-block;
+    display: block;
+    text-align: center;
     padding: 5px 10px;
+    margin-right: 10px;
     border-radius: 5px;
     color: white;
     background-color: ${props => props.color};

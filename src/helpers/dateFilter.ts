@@ -6,26 +6,28 @@ export const getCurrentMonth = () => {
 }
 
 export const filterListByMonth = (list: Item[], date: string): Item[] => {
-    let newList: Item[] = [];
-    let [year, month] = date.split('-');
-
-    for (let i in list) {
-        if (
-            list[i].date.getFullYear() === parseInt(year) &&
-            (list[i].date.getMonth() + 1) === parseInt(month)
-        ) {
-            newList.push(list[i]);
-        }
+    if (!list || list.length === 0) {
+        return [];
     }
 
+    const [year, month] = date.split('-');
+    const filteredList = list.filter((item) => {
+        if (item.date && item.date instanceof Date) {
+            return (
+                item.date.getFullYear() === parseInt(year) &&
+                (item.date.getMonth() + 1) === parseInt(month)
+            );
+        }
+        return false;
+    });
 
-    return newList;
-}
+    return filteredList;
+};
 
 export const formatDate = (date: Date): string => {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
-    let day = date.getDay();
+    let day = date.getDate();
 
     return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`;
 }
