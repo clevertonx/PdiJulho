@@ -2,15 +2,21 @@ import * as C from './styles';
 import { Item } from '../../types/Item';
 import { formatDate } from '../../helpers/dateFilter';
 import { categories } from '../../data/categories';
+import { parseTimestampToDate } from '../../helpers/dateFilter'
 
 type Props = {
     item: Item
 }
 
 export const TableItem = ({ item }: Props) => {
+    const dateObject = item.date instanceof Date ? item.date : parseTimestampToDate(item.date);
+    const dateString = dateObject.toISOString();
+    const formattedDate = formatDate(dateString);
+
+
     return (
         <C.TableLine>
-            <C.TableColumn>{formatDate(item.date)}</C.TableColumn>
+            <C.TableColumn>{formattedDate}</C.TableColumn>
             <C.TableColumn>
                 <C.Category color={categories[item.category].color}>
                     {categories[item.category].title}

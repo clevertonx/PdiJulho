@@ -5,32 +5,48 @@ export const getCurrentMonth = () => {
     return `${now.getFullYear()}-${now.getMonth() + 1}`;
 }
 
-export const filterListByMonth = (list: Item[], date: string): Item[] => {
-    if (!list || list.length === 0) {
-        return [];
-    }
-
-    const [year, month] = date.split('-');
-    const filteredList = list.filter((item) => {
-        if (item.date && item.date instanceof Date) {
-            return (
-                item.date.getFullYear() === parseInt(year) &&
-                (item.date.getMonth() + 1) === parseInt(month)
-            );
-        }
-        return false;
-    });
-
-    return filteredList;
+export const parseTimestampToDate = (timestamp: string): Date => {
+    return new Date(timestamp);
 };
 
-export const formatDate = (date: Date): string => {
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
+export const filterListByMonth = (list: Item[], date: string): Item[] => {
+  
+    const [year, month] = date.split('-');
+    const numericYear = parseInt(year);
+    const numericMonth = parseInt(month);
+    console.log('num', numericYear, numericMonth)
+  
+    if (isNaN(numericYear) || isNaN(numericMonth) || numericMonth < 1 || numericMonth > 12) {
+      return [];
+    }
+  
+    const filteredList = list.filter((item) => {
+      const itemDate = new Date(item.date);
+      return (
+        itemDate.getFullYear() === numericYear &&
+        (itemDate.getMonth() + 1) === numericMonth
+      );
+    });
+  
+    return filteredList;
+  };
+  
+
+
+export const formatDate = (dateString: string): string => {
+    console.log(dateString)
+    const dateObject = new Date(dateString);
+    
+    if (isNaN(dateObject.getTime())) {
+        return "data inválida";
+    }
+
+    let year = dateObject.getFullYear();
+    let month = dateObject.getMonth() + 1;
+    let day = dateObject.getDate();
 
     return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`;
-}
+};
 
 const addZeroToDate = (n: number): string => n < 10 ? `0${n}` : `${n}`;
 

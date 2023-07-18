@@ -22,13 +22,22 @@ const App = () => {
     const itemsRef = ref(database, 'items');
     onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
+      console.log('useEffect - data:', data);
       if (data) {
         const itemsList: Item[] = Object.values(data);
-        setFilteredList(filterListByMonth(itemsList, currentMonth));
+        console.log('useEffect - ItemsList:', itemsList);
+        const filteredList = filterListByMonth(itemsList, currentMonth);
+        console.log('useEffect - filteredList:', filteredList);
+        setFilteredList(filteredList);
         setIsLoading(false); 
       }
     });
   }, [currentMonth]);
+
+  const updateFilteredList = (list: Item[], currentMonth: string) => {
+    const filteredList = filterListByMonth(list, currentMonth);
+    setFilteredList(filteredList);
+  };
 
 
   useEffect(() => {
@@ -57,9 +66,26 @@ const App = () => {
     setCurrentMonth(newMonth);
   }
 
+  const formatDateToMonthString = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}`;
+  };
+
   function handleAddItem(item: Item): void {
-    throw new Error('Function not implemented.');
+    const itemsRef = ref(database, 'items');
+  
+    push(itemsRef, item)
+      .then((newItemRef) => {
+        const newItemKey = newItemRef.key;
+  
+        setList((prevList) => [...prevList, { ...item, key: newItemKey }]);
+      })
+      .catch((error) => {
+        console.error('Erro ao adicionar item no Database:', error);
+      });
   }
+  
 
   return (
     <C.Container>
@@ -67,7 +93,8 @@ const App = () => {
         <C.HeaderText>Sistema Financeiro</C.HeaderText>
       </C.Header>
       <C.Body>
-        <InfoArea currentMonth={currentMonth}
+        <InfoArea
+          currentMonth={currentMonth}
           onMonthChange={handleMonthChange}
           income={income}
           expense={expense}
