@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ref, onValue, push, set } from 'firebase/database';
+import { ref, onValue } from 'firebase/database';
 import { database } from './FireBase/firebase';
 import * as C from './App.styles';
 import { Item } from './types/Item';
@@ -73,19 +73,9 @@ const App = () => {
   };
 
   function handleAddItem(item: Item): void {
-    const itemsRef = ref(database, 'items');
-  
-    push(itemsRef, item)
-      .then((newItemRef) => {
-        const newItemKey = newItemRef.key;
-  
-        setList((prevList) => [...prevList, { ...item, key: newItemKey }]);
-      })
-      .catch((error) => {
-        console.error('Erro ao adicionar item no Database:', error);
-      });
+    throw new Error('Function not implemented.');
   }
-  
+
 
   return (
     <C.Container>
