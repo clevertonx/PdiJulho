@@ -14,6 +14,8 @@ export const TableItem = ({ item }: Props) => {
     const formattedDate = formatDate(dateString);
 
 
+
+
     return (
         <C.TableLine>
             <C.TableColumn>{formattedDate}</C.TableColumn>
@@ -27,6 +29,9 @@ export const TableItem = ({ item }: Props) => {
                 <C.Value color={categories[item.category].expense ? 'red' : 'green'}>
                     R$ {item.value}
                 </C.Value>
+            </C.TableColumn>
+            <C.TableColumn>
+                <C.Excluir><button>❌</button></C.Excluir>
             </C.TableColumn>
         </C.TableLine>
     );

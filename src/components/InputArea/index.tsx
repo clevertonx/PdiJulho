@@ -45,30 +45,33 @@ export const InputArea = ({ onAdd }: Props) => {
 
     return (
         <C.Container>
-            <input
+            <C.Input><input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-            />
-            <input
+            /></C.Input>
+            <C.Input><input
                 type="text"
                 placeholder="Categoria"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-            />
-            <input
+            /></C.Input>
+            <C.Input><input
                 type="text"
                 placeholder="Título"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="Valor"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-            />
-            <button onClick={handleAddItem}>Adicionar</button>
+            /></C.Input>
+            <C.Input>
+                <input
+                    type="number"
+                    placeholder="Valor"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                /></C.Input>
+
+            <C.Input><button onClick={handleAddItem}>Adicionar</button></C.Input>
+
         </C.Container>
     );
 };

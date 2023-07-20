@@ -16,6 +16,7 @@ export const TableArea = ({ list }: Props) => {
                     <C.TableHeadColumn width={130}>Categoria</C.TableHeadColumn>
                     <C.TableHeadColumn>Título</C.TableHeadColumn>
                     <C.TableHeadColumn width={150}>Valor</C.TableHeadColumn>
+                    <C.TableHeadColumn width={150}>Excluir</C.TableHeadColumn>
                 </tr>
             </thead>
             <tbody>
