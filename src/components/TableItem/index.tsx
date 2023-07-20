@@ -31,7 +31,7 @@ export const TableItem = ({ item }: Props) => {
                 </C.Value>
             </C.TableColumn>
             <C.TableColumn>
-                <C.Excluir><button>❌</button></C.Excluir>
+                <C.Excluir><button>X</button></C.Excluir>
             </C.TableColumn>
         </C.TableLine>
     );

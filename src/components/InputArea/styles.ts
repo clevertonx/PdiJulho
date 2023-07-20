@@ -19,8 +19,9 @@ export const Input = styled.div`
       border-radius: 5px;
     }
     button{
-        background-color: 	#4169E1;
+        background-color: #4169E1;
         border-radius: 100px;
+        font-weight: bold;
         box-shadow: rgba(65, 105, 225, 0.35) 0 -25px 18px -14px inset, rgba(65, 105, 225, 0.25) 0 1px 2px,
         rgba(65, 105, 225, 0.25) 0 2px 4px, rgba(65, 105, 225, 0.25) 0 4px 8px, rgba(65, 105, 225, 0.25) 0 8px 16px,
         rgba(65, 105, 225, 0.25) 0 16px 32px;
