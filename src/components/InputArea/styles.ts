@@ -18,6 +18,13 @@ export const Input = styled.div`
       border: none;
       border-radius: 5px;
     }
+    select{
+        box-shadow: 3px 2px 3px 2px #CCC;
+        height: 25px;
+        width: 150px;
+        border: none;
+        border-radius: 5px;
+    }
     button{
         background-color: #4169E1;
         border-radius: 100px;

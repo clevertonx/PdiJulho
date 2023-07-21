@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Item } from '../../types/Item';
 import { database } from '../../FireBase/firebase';
 import { ref, push, set } from 'firebase/database';
+import { categories } from '../../data/categories';
+import { Category } from '../../types/Category';
 
 
 type Props = {
@@ -50,12 +52,14 @@ export const InputArea = ({ onAdd }: Props) => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
             /></C.Input>
-            <C.Input><input
-                type="text"
-                placeholder="Categoria"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-            /></C.Input>
+            <C.Input><select value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="">Selecione categoria</option>
+                {Object.keys(categories).map((categoryKey) => (
+                    <option key={categoryKey} value={categoryKey}>
+                        {categories[categoryKey as keyof Category].title}
+                    </option>
+                ))}
+            </select></C.Input>
             <C.Input><input
                 type="text"
                 placeholder="Título"

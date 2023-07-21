@@ -18,16 +18,14 @@ export const TableItem = ({ item, onDelete }: Props) => {
 
     const handleDeleteItem = () => {
         remove(ref(database, `items/${item.title}`))
-        .then(() => {
-            console.log('Item excluído com sucesso do Database!');
-            onDelete(item.title); 
-        })
-        .catch((error) => {
-            console.error('Erro ao excluir item do Database:', error);
-        });
-};
-
-
+            .then(() => {
+                console.log('Item excluído com sucesso do Database!');
+                onDelete(item.title);
+            })
+            .catch((error) => {
+                console.error('Erro ao excluir item do Database:', error);
+            });
+    };
 
     return (
         <C.TableLine>

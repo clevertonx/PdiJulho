@@ -29,7 +29,7 @@ const App = () => {
         const filteredList = filterListByMonth(itemsList, currentMonth);
         console.log('useEffect - filteredList:', filteredList);
         setFilteredList(filteredList);
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     });
   }, [currentMonth]);
@@ -65,12 +65,6 @@ const App = () => {
   const handleMonthChange = (newMonth: string) => {
     setCurrentMonth(newMonth);
   }
-
-  const formatDateToMonthString = (date: Date): string => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    return `${year}-${month}`;
-  };
 
   function handleAddItem(item: Item): void {
     throw new Error('Function not implemented.');
