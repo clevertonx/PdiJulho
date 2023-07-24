@@ -17,14 +17,17 @@ export const TableItem = ({ item, onDelete }: Props) => {
     const formattedDate = formatDate(dateString);
 
     const handleDeleteItem = () => {
-        remove(ref(database, `items/${item.title}`))
-            .then(() => {
-                console.log('Item excluído com sucesso do Database!');
-                onDelete(item.title);
-            })
-            .catch((error) => {
-                console.error('Erro ao excluir item do Database:', error);
-            });
+        const confirmDelete = window.confirm('Tem certeza que deseja excluir este item?');
+        if (confirmDelete) {
+            remove(ref(database, `items/${item.title}`))
+                .then(() => {
+                    console.log('Item excluído com sucesso do Database!');
+                    onDelete(item.title);
+                })
+                .catch((error) => {
+                    console.error('Erro ao excluir item do Database:', error);
+                });
+        }
     };
 
     return (

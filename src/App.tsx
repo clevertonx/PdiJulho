@@ -3,7 +3,6 @@ import { ref, onValue, remove } from 'firebase/database';
 import { database } from './FireBase/firebase';
 import * as C from './App.styles';
 import { Item } from './types/Item';
-import { Category } from './types/Category';
 import { categories } from './data/categories';
 import { getCurrentMonth, filterListByMonth } from './helpers/dateFilter';
 import { TableArea } from './components/TableArea';
@@ -33,12 +32,6 @@ const App = () => {
       }
     });
   }, [currentMonth]);
-
-  const updateFilteredList = (list: Item[], currentMonth: string) => {
-    const filteredList = filterListByMonth(list, currentMonth);
-    setFilteredList(filteredList);
-  };
-
 
   useEffect(() => {
     if (list.length > 0) {

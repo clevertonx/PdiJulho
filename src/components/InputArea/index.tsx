@@ -18,6 +18,10 @@ export const InputArea = ({ onAdd }: Props) => {
     const [value, setValue] = useState('');
 
     const handleAddItem = () => {
+        if (!date || !category || !title || !value) {
+            alert('Por favor, preencha todos os campos antes de adicionar o item.');
+            return;
+        }
         const parsedValue = parseInt(value);
 
 
@@ -27,7 +31,6 @@ export const InputArea = ({ onAdd }: Props) => {
             title,
             value: isNaN(parsedValue) ? 0 : parsedValue,
         };
-        console.log(newItem)
         const formattedDate = newItem.date.toISOString();
         const itemsRef = ref(database, 'items');
         const newItemRef = push(itemsRef);
@@ -52,11 +55,12 @@ export const InputArea = ({ onAdd }: Props) => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
             /></C.Input>
-            <C.Input><select value={category} onChange={(e) => setCategory(e.target.value)}>
-                <option value="">Selecione categoria</option>
+            <C.Input>  <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="">Selecione</option>
                 {Object.keys(categories).map((categoryKey) => (
                     <option key={categoryKey} value={categoryKey}>
-                        {categories[categoryKey as keyof Category].title}
+                        {categories[categoryKey as keyof Category].title}{' '}
+                        {categories[categoryKey as keyof Category].expense ? '(-)' : '(+)'}
                     </option>
                 ))}
             </select></C.Input>
