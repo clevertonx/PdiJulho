@@ -5,6 +5,8 @@ import { categories } from '../../data/categories';
 import { parseTimestampToDate } from '../../helpers/dateFilter'
 import { ref, remove } from 'firebase/database';
 import { database } from '../../FireBase/firebase';
+import { ConfirmationModal } from '../ConfirmationModal';
+import { useState } from 'react';
 
 type Props = {
     item: Item
@@ -16,18 +18,24 @@ export const TableItem = ({ item, onDelete }: Props) => {
     const dateString = dateObject.toISOString();
     const formattedDate = formatDate(dateString);
 
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+
     const handleDeleteItem = () => {
-        const confirmDelete = window.confirm('Tem certeza que deseja excluir este item?');
-        if (confirmDelete) {
-            remove(ref(database, `items/${item.title}`))
-                .then(() => {
-                    console.log('Item excluído com sucesso do Database!');
-                    onDelete(item.title);
-                })
-                .catch((error) => {
-                    console.error('Erro ao excluir item do Database:', error);
-                });
-        }
+        setIsConfirmationOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        remove(ref(database, `items/${item.title}`))
+            .then(() => {
+                console.log('Item excluído com sucesso do Database!');
+                onDelete(item.title);
+            })
+            .catch((error) => {
+                console.error('Erro ao excluir item do Database:', error);
+            })
+            .finally(() => {
+                setIsConfirmationOpen(false);
+            });
     };
 
     return (
@@ -45,8 +53,17 @@ export const TableItem = ({ item, onDelete }: Props) => {
                 </C.Value>
             </C.TableColumn>
             <C.TableColumn>
-                <C.Excluir><button onClick={handleDeleteItem}>X</button></C.Excluir>
+                <C.Excluir>
+                    <button onClick={handleDeleteItem}>X</button>
+                </C.Excluir>
             </C.TableColumn>
+
+            <ConfirmationModal
+                isOpen={isConfirmationOpen}
+                onClose={() => setIsConfirmationOpen(false)}
+                onConfirm={handleConfirmDelete}
+                message={`Tem certeza que deseja excluir o item "${item.title}"?`}
+            />
         </C.TableLine>
     );
 }
