@@ -5,6 +5,7 @@ import { database } from '../../FireBase/firebase';
 import { ref, push, set, getDatabase, query, orderByChild, equalTo, get } from 'firebase/database';
 import { categories } from '../../data/categories';
 import { Category } from '../../types/Category';
+import { AlertModal } from '../AlertModal';
 
 
 type Props = {
@@ -29,19 +30,21 @@ export const InputArea = ({ onAdd }: Props) => {
     const [category, setCategory] = useState('');
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
+    const [showFieldAlert, setShowFieldAlert] = useState(false);
+    const [showItemExistsAlert, setShowItemExistsAlert] = useState(false);
 
     const handleAddItem = async () => {
         if (!date || !category || !title || !value) {
-            alert('Por favor, preencha todos os campos antes de adicionar o item.');
+            setShowFieldAlert(true);
             return;
         }
 
         const itemExists = await checkIfItemExists(title);
         if (itemExists) {
-            alert('Já existe um item com o mesmo título. Por favor, escolha um título diferente.');
+            setShowItemExistsAlert(true);
             return;
         }
-
+        
         const parsedValue = parseInt(value);
 
         const newItem: Item = {
@@ -99,6 +102,16 @@ export const InputArea = ({ onAdd }: Props) => {
                 /></C.Input>
 
             <C.Input><button onClick={handleAddItem}>Adicionar</button></C.Input>
+            <AlertModal
+                isOpen={showFieldAlert}
+                onClose={() => setShowFieldAlert(false)}
+                message="Por favor, preencha todos os campos antes de adicionar o item."
+            />
+            <AlertModal
+                isOpen={showItemExistsAlert}
+                onClose={() => setShowItemExistsAlert(false)}
+                message="Já existe um item com o mesmo título. Por favor, escolha um título diferente."
+            />
 
         </C.Container>
     );
