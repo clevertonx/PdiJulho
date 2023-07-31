@@ -2,7 +2,7 @@ import * as C from './styles';
 import { useState } from 'react';
 import { Item } from '../../types/Item';
 import { database } from '../../FireBase/firebase';
-import { ref, push, set } from 'firebase/database';
+import { ref, push, set, getDatabase, query, orderByChild, equalTo, get } from 'firebase/database';
 import { categories } from '../../data/categories';
 import { Category } from '../../types/Category';
 
@@ -11,19 +11,38 @@ type Props = {
     onAdd: (item: Item) => void;
 }
 
+const checkIfItemExists = async (title: string): Promise<boolean> => {
+    const itemsRef = ref(database, 'items');
+    const itemsQuery = query(itemsRef, orderByChild('title'), equalTo(title));
+
+    try {
+        const snapshot = await get(itemsQuery);
+        return snapshot.exists();
+    } catch (error) {
+        console.error('Erro ao verificar se o item já existe:', error);
+        return false;
+    }
+};
+
 export const InputArea = ({ onAdd }: Props) => {
     const [date, setDate] = useState('');
     const [category, setCategory] = useState('');
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
 
-    const handleAddItem = () => {
+    const handleAddItem = async () => {
         if (!date || !category || !title || !value) {
             alert('Por favor, preencha todos os campos antes de adicionar o item.');
             return;
         }
-        const parsedValue = parseInt(value);
 
+        const itemExists = await checkIfItemExists(title);
+        if (itemExists) {
+            alert('Já existe um item com o mesmo título. Por favor, escolha um título diferente.');
+            return;
+        }
+
+        const parsedValue = parseInt(value);
 
         const newItem: Item = {
             date: new Date(date),
@@ -34,6 +53,7 @@ export const InputArea = ({ onAdd }: Props) => {
         const formattedDate = newItem.date.toISOString();
         const itemsRef = ref(database, 'items');
         const newItemRef = push(itemsRef);
+
         set(newItemRef, { ...newItem, date: formattedDate })
             .then(() => {
                 console.log('Item adicionado com sucesso ao Database!');
