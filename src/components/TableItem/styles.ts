@@ -1,12 +1,14 @@
 import styled from "styled-components";
 
-export const TableLine = styled.tr``;
+export const TableLine = styled.tr`
+`;
 
 export const TableColumn = styled.td`
     padding: 10px 0;
+    text-align: center;
 `;
 
-export const Category = styled.div<{color: string}>`
+export const Category = styled.div<{ color: string }>`
     display: block;
     text-align: center;
     padding: 5px 10px;
@@ -16,8 +18,30 @@ export const Category = styled.div<{color: string}>`
     background-color: ${props => props.color};
 `;
 
-export const Value = styled.div<{color: string}>`
+export const Value = styled.div<{ color: string }>`
     color: ${props => props.color}
+`;
+
+export const StatusColumn = styled.td<{ status: string }>`
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: ${props => {
+        switch (props.status) {
+            case 'vencida':
+                return '#800000';
+            case 'pago':
+                return 'green';
+            case 'aguardando pagamento':
+                return '#FF4500';
+            default:
+                return 'white';
+        }
+    }};
 `;
 
 export const Excluir = styled.div`

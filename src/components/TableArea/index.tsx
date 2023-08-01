@@ -15,7 +15,9 @@ export const TableArea = ({ list, onDelete }: Props) => {
                 <tr>
                     <C.TableHeadColumn width={100}>Data</C.TableHeadColumn>
                     <C.TableHeadColumn width={130}>Categoria</C.TableHeadColumn>
-                    <C.TableHeadColumn>Título</C.TableHeadColumn>
+                    <C.TableHeadColumn width={130}>Título</C.TableHeadColumn>
+                    <C.TableHeadColumn width={220}>Status</C.TableHeadColumn>
+                    <C.TableHeadColumn width={120}>Pago?</C.TableHeadColumn>
                     <C.TableHeadColumn width={150}>Valor</C.TableHeadColumn>
                     <C.TableHeadColumn width={150}>Excluir</C.TableHeadColumn>
                 </tr>

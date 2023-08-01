@@ -30,6 +30,7 @@ export const InputArea = ({ onAdd }: Props) => {
     const [category, setCategory] = useState('');
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
+    const [status, setStatus] = useState('');
     const [showFieldAlert, setShowFieldAlert] = useState(false);
     const [showItemExistsAlert, setShowItemExistsAlert] = useState(false);
 
@@ -48,9 +49,10 @@ export const InputArea = ({ onAdd }: Props) => {
         const parsedValue = parseInt(value);
 
         const newItem: Item = {
-            date: new Date(date),
+            date: new Date(date + "T00:00:00"),
             category,
             title,
+            status,
             value: isNaN(parsedValue) ? 0 : parsedValue,
         };
         const formattedDate = newItem.date.toISOString();

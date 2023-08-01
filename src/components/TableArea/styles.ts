@@ -9,8 +9,9 @@ export const Table = styled.table`
     margin-top: 20px;
     `;
 
-export const TableHeadColumn = styled.th<{width?: number }>`
-    width: ${props =>  props.width ? `${props.width}px` : 'auto'};
+export const TableHeadColumn = styled.th<{ width?: number }>`
+    width: ${props => props.width ? `${props.width}px` : 'auto'};
     padding: 10px 0;
-    text-align: left;
+    text-align: center;
 `;
+
