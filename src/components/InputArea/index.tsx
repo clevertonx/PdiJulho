@@ -33,6 +33,7 @@ export const InputArea = ({ onAdd }: Props) => {
     const [status, setStatus] = useState('');
     const [showFieldAlert, setShowFieldAlert] = useState(false);
     const [showItemExistsAlert, setShowItemExistsAlert] = useState(false);
+    const [isItemCompleted, setIsItemCompleted] = useState(false);
 
     const handleAddItem = async () => {
         if (!date || !category || !title || !value) {
@@ -45,19 +46,34 @@ export const InputArea = ({ onAdd }: Props) => {
             setShowItemExistsAlert(true);
             return;
         }
-        
+
         const parsedValue = parseInt(value);
 
+        const currentDate = new Date().getTime();
+        const itemDate = new Date(date + "T00:00:00").getTime();
+        let newItemStatus = '';
+
+        if (isItemCompleted) {
+            newItemStatus = 'pago';
+        } else if (itemDate > currentDate) {
+            newItemStatus = 'aguardando pagamento';
+        } else if (itemDate < currentDate) {
+            newItemStatus = 'vencida';
+        }
+        console.log('newitem', newItemStatus)
+        
+        const itemsRef = ref(database, 'items');
+        const newItemRef = push(itemsRef);
+
         const newItem: Item = {
+            id: newItemRef.key || '', 
             date: new Date(date + "T00:00:00"),
             category,
             title,
-            status,
+            status: newItemStatus,
             value: isNaN(parsedValue) ? 0 : parsedValue,
         };
         const formattedDate = newItem.date.toISOString();
-        const itemsRef = ref(database, 'items');
-        const newItemRef = push(itemsRef);
 
         set(newItemRef, { ...newItem, date: formattedDate })
             .then(() => {
@@ -66,12 +82,14 @@ export const InputArea = ({ onAdd }: Props) => {
                 setDate('');
                 setCategory('');
                 setTitle('');
+                setStatus('');
                 setValue('');
             })
             .catch((error) => {
                 console.error('Erro ao adicionar item no Database:', error);
             });
     };
+
 
     return (
         <C.Container>

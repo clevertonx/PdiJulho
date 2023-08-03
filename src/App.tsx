@@ -15,20 +15,15 @@ const App = () => {
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const itemsRef = ref(database, 'items');
     onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('useEffect - data:', data);
       if (data) {
         const itemsList: Item[] = Object.values(data);
-        console.log('useEffect - ItemsList:', itemsList);
         const filteredList = filterListByMonth(itemsList, currentMonth);
-        console.log('useEffect - filteredList:', filteredList);
         setFilteredList(filteredList);
-        setIsLoading(false);
       }
     });
   }, [currentMonth]);

@@ -1,12 +1,12 @@
-import * as C from './styles';
-import { Item } from '../../types/Item';
-import { formatDate } from '../../helpers/dateFilter';
-import { categories } from '../../data/categories';
-import { parseTimestampToDate } from '../../helpers/dateFilter';
-import { ref, remove } from 'firebase/database';
+import { ref, remove, update } from 'firebase/database';
+import { useState } from 'react';
 import { database } from '../../FireBase/firebase';
+import { categories } from '../../data/categories';
+import { formatDate, parseTimestampToDate } from '../../helpers/dateFilter';
+import { Item } from '../../types/Item';
 import { ConfirmationModal } from '../ConfirmationModal';
-import { useState, useEffect } from 'react';
+import * as C from './styles';
+import { getEventListeners } from 'events';
 
 type Props = {
     item: Item;
@@ -17,39 +17,19 @@ export const TableItem = ({ item, onDelete }: Props) => {
     const dateObject = item.date instanceof Date ? item.date : parseTimestampToDate(item.date);
     const dateString = dateObject.toISOString();
     const formattedDate = formatDate(dateString);
-
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-    const [status, setStatus] = useState(item.status);
+    const [isChecked, setIsChecked] = useState(item.status === 'pago');
 
-    const updateStatus = () => {
-        const currentDate = new Date().getTime();
-        const itemDate = dateObject.getTime();
-      
-        if (itemDate > currentDate) {
-          setStatus('aguardando pagamento');
-        } else if (itemDate < currentDate && !item.status.includes('pago')) {
-          setStatus('vencida');
-        }
-      };
-
-
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.checked) {
-            setStatus('pago');
-        } else {
-            updateStatus();
-        }
-    };
 
     const handleDeleteItem = () => {
         setIsConfirmationOpen(true);
     };
 
     const handleConfirmDelete = () => {
-        remove(ref(database, `items/${item.title}`))
+        remove(ref(database, `items/${item.id}`))
             .then(() => {
                 console.log('Item excluído com sucesso do Database!');
-                onDelete(item.title);
+                onDelete(item.id);
             })
             .catch((error) => {
                 console.error('Erro ao excluir item do Database:', error);
@@ -58,6 +38,43 @@ export const TableItem = ({ item, onDelete }: Props) => {
                 setIsConfirmationOpen(false);
             });
     };
+
+    const handleCheckboxChange = async () => {
+        const db = database;
+        const currentDate = new Date().getTime();
+        const itemDate = dateObject.getTime();
+        console.log('itemDate:', itemDate);
+        console.log('currentDate:', currentDate);
+    
+        let newStatus = '';
+    
+        if (!isChecked) {
+            newStatus = 'pago';
+        } else {
+            if (itemDate > currentDate) {
+                newStatus = 'aguardando pagamento';
+            } else if (itemDate < currentDate) {
+                newStatus = 'vencida';
+            }
+        }
+    
+        console.log('newStatus:', newStatus);
+    
+        setIsChecked(!isChecked);
+    
+        try {
+            await update(ref(db, `items/${item.id}`), {
+                status: newStatus
+            });
+            console.log('Status do item atualizado com sucesso no Database!');
+        } catch (error) {
+            console.error('Erro ao atualizar status do item no Database:', error);
+        }
+    }
+    
+    
+    
+
 
     return (
         <C.TableLine>
@@ -68,11 +85,11 @@ export const TableItem = ({ item, onDelete }: Props) => {
                 </C.Category>
             </C.TableColumn>
             <C.TableColumn>{item.title}</C.TableColumn>
-            <C.StatusColumn status={status}>{status}</C.StatusColumn>
+            <C.StatusColumn status={item.status}>{item.status}</C.StatusColumn>
             <C.TableColumn>
                 <input
                     type="checkbox"
-                    checked={status === 'pago'}
+                    checked={isChecked}
                     onChange={handleCheckboxChange}
                 />
             </C.TableColumn>
