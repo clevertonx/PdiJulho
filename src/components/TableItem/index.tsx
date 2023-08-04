@@ -19,6 +19,8 @@ export const TableItem = ({ item, onDelete }: Props) => {
     const formattedDate = formatDate(dateString);
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(item.status === 'pago');
+    const isExpense = categories[item.category].expense;
+
 
 
     const handleDeleteItem = () => {
@@ -71,10 +73,6 @@ export const TableItem = ({ item, onDelete }: Props) => {
             console.error('Erro ao atualizar status do item no Database:', error);
         }
     }
-    
-    
-    
-
 
     return (
         <C.TableLine>
@@ -85,16 +83,24 @@ export const TableItem = ({ item, onDelete }: Props) => {
                 </C.Category>
             </C.TableColumn>
             <C.TableColumn>{item.title}</C.TableColumn>
-            <C.StatusColumn status={item.status}>{item.status}</C.StatusColumn>
+            {isExpense ? (
+                <C.StatusColumn status={item.status}>{item.status}</C.StatusColumn>
+            ) : (
+                <C.TableColumn /> 
+            )}
+            {isExpense ? (
+                <C.TableColumn>
+                    <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                    />
+                </C.TableColumn>
+            ) : (
+                <C.TableColumn /> 
+            )}
             <C.TableColumn>
-                <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={handleCheckboxChange}
-                />
-            </C.TableColumn>
-            <C.TableColumn>
-                <C.Value color={categories[item.category].expense ? 'red' : 'green'}>
+                <C.Value color={isExpense ? 'red' : 'green'}>
                     R$ {item.value}
                 </C.Value>
             </C.TableColumn>

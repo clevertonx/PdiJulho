@@ -24,7 +24,7 @@ export const Value = styled.div<{ color: string }>`
 
 export const StatusColumn = styled.td<{ status: string }>`
     display: block;
-    margin-top: 10px;
+    margin-top: 15px;
     text-align: center;
     padding: 5px 10px;
     margin-right: 10px;
