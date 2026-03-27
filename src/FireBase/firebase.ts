@@ -3,13 +3,13 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCPcfc6EA9EFuELZLxPiNpR6Lc9U1psEkA",
-  authDomain: "rentsystem-pdi.firebaseapp.com",
-  projectId: "rentsystem-pdi",
-  storageBucket: "rentsystem-pdi.appspot.com",
-  messagingSenderId: "851280386241",
-  appId: "1:851280386241:web:82bf2640f4823a318d1c40",
-  measurementId: "G-893NZD49EL"
+  apiKey: "AIzaSyAfopWt6hZoYnIQtKh6pyYsJLISvUszoPA",
+    authDomain: "sistemfinanca.firebaseapp.com",
+    projectId: "sistemfinanca",
+    storageBucket: "sistemfinanca.appspot.com",
+    messagingSenderId: "884380726073",
+    appId: "1:884380726073:web:c269eac750acdac5292ee8",
+    measurementId: "G-BFPSZXHE5G"
 };
 
 const app = initializeApp(firebaseConfig);

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+`;
 
 export const Header = styled.div`
     background-color: #8B008B;
@@ -19,4 +20,5 @@ export const Body = styled.div`
     margin: auto;
     max-width: 980px;
     margin-bottom: 50px;
+    
 `;
